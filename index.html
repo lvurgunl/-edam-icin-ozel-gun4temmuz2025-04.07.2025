@@ -3,357 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Eda & [Senin Adın]</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <title>Eda & Sen ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #ff4d6d;
-            --secondary: #c9184a;
-            --bg-color: #0f0f15;
-            --card-bg: rgba(255, 255, 255, 0.05);
+            --primary: #ff2e63;
+            --secondary: #08d9d6;
+            --bg-color: #000000;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text-color: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Inter', sans-serif; overflow-x: hidden; padding-bottom: env(safe-area-inset-bottom); }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: 50px;
-        }
-
-        /* Giriş Ekranı (Müzik Başlatmak İçin) */
-        #intro-overlay {
+        /* --- ŞİFRE EKRANI --- */
+        #password-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 1s ease;
+            padding: 20px;
+            transition: opacity 0.8s ease-in-out;
         }
 
-        .tap-icon {
-            font-size: 3rem;
-            animation: pulse 1.5s infinite;
-            margin-bottom: 20px;
-            color: var(--primary);
+        .lock-icon { font-size: 3rem; color: var(--primary); margin-bottom: 20px; animation: pulse 2s infinite; }
+        
+        .hint-text {
+            color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 25px; line-height: 1.5; max-width: 300px;
         }
 
-        .intro-text {
+        .password-input {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
             font-size: 1.2rem;
-            opacity: 0.8;
+            text-align: center;
+            width: 200px;
+            outline: none;
             letter-spacing: 2px;
-        }
-
-        /* Ana İçerik */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            opacity: 0; /* JS ile açılacak */
-            transition: opacity 1.5s ease;
-        }
-
-        header {
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 4rem;
-            background: linear-gradient(to right, #ff4d6d, #ffb3c1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            line-height: 1.2;
-        }
-
-        p.subtitle {
-            font-size: 1rem;
-            opacity: 0.7;
             margin-bottom: 20px;
         }
-
-        /* Sayaç */
-        .counter-box {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .timer {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-top: 10px;
-            color: var(--primary);
-        }
-
-        /* Fotoğraf Galerisi */
-        .gallery {
-            display: grid;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .photo-card {
-            background: white;
-            padding: 10px;
-            border-radius: 4px;
-            transform: rotate(-2deg);
-            transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
         
-        .photo-card:nth-child(even) {
-            transform: rotate(2deg);
-        }
+        .password-input::placeholder { color: rgba(255,255,255,0.3); letter-spacing: normal; font-size: 1rem; }
 
-        .photo-card img {
-            width: 100%;
-            border-radius: 2px;
-            display: block;
+        .enter-btn {
+            background: var(--primary); color: white; border: none; padding: 12px 40px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 0 15px rgba(255, 46, 99, 0.4); transition: transform 0.2s;
         }
+        .enter-btn:active { transform: scale(0.95); }
+        .error-msg { color: #ff0000; margin-top: 15px; font-size: 0.9rem; display: none; }
 
-        .caption {
-            color: #333;
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.5rem;
-            text-align: center;
-            margin-top: 5px;
+        /* --- ANA İÇERİK --- */
+        .container { padding: 20px; padding-top: env(safe-area-inset-top); opacity: 0; transition: opacity 1.5s ease; max-width: 600px; margin: 0 auto; display: none; }
+
+        header { text-align: center; margin: 40px 0; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3.5rem; background: linear-gradient(to right, #ff2e63, #ff9999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; line-height: 1.2; }
+        .date-badge { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 8px 16px; border-radius: 50px; font-size: 0.9rem; display: inline-block; backdrop-filter: blur(10px); }
+
+        .counter-card { background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 24px; padding: 25px; text-align: center; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .counter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .counter-item .num { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: block; }
+        .counter-item .label { font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; }
+
+        .section-title { font-size: 1.5rem; margin-bottom: 20px; border-left: 4px solid var(--primary); padding-left: 15px; display: flex; align-items: center; gap: 10px; margin-top: 40px; }
+
+        /* Video Wrapper */
+        .video-wrapper {
+            border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(255, 46, 99, 0.2); 
+            margin-bottom: 25px; border: 1px solid var(--glass-border); position: relative;
         }
+        video { width: 100%; display: block; object-fit: cover; }
 
-        /* Video Alanı */
-        .video-container {
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
-            margin-bottom: 40px;
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            background: #000;
-        }
+        /* Galeri */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 40px; }
+        .gallery-item { position: relative; overflow: hidden; border-radius: 12px; aspect-ratio: 1/1; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.1); }
 
-        .video-container iframe, .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        #lightbox img { max-width: 95%; max-height: 80vh; border-radius: 12px; }
+        #lightbox-close { position: absolute; top: 40px; right: 20px; font-size: 2rem; color: white; cursor: pointer; }
 
-        /* Mektup Alanı */
-        .letter {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            padding: 30px;
-            border-radius: 20px;
-            line-height: 1.8;
-            font-size: 1rem;
-            margin-bottom: 50px;
-            border-left: 4px solid var(--primary);
-        }
+        .letter-box { background: linear-gradient(135deg, rgba(255,46,99,0.1), transparent); border: 1px solid var(--primary); padding: 30px; border-radius: 20px; font-size: 1.05rem; line-height: 1.8; position: relative; margin-bottom: 60px; }
 
-        .letter h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        /* Müzik Kontrolü */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 77, 109, 0.8);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
-            animation: spin 4s linear infinite;
-        }
-
-        /* Animasyonlar */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
+        .music-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(255, 46, 99, 0.6); cursor: pointer; z-index: 100; }
+        .music-playing { animation: spin 4s linear infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .heart {
-            position: fixed;
-            color: var(--primary);
-            animation: float 6s linear infinite;
-            opacity: 0;
-            z-index: -1;
-            font-size: 1.5rem;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-        }
-        
-        /* iPhone Safe Area */
-        @supports (padding-top: env(safe-area-inset-top)) {
-            body {
-                padding-top: env(safe-area-inset-top);
-                padding-bottom: env(safe-area-inset-bottom);
-            }
-        }
+        .floating-heart { position: fixed; top: -10vh; color: var(--primary); opacity: 0; z-index: -1; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh); } }
     </style>
 </head>
 <body>
 
-    <div id="intro-overlay" onclick="startExperience()">
-        <div class="tap-icon">❤️</div>
-        <div class="intro-text">Eda, sürprizin için dokun...</div>
+    <div id="password-screen">
+        <div class="lock-icon"><i class="fas fa-heart"></i></div>
+        <p class="hint-text">
+            Sürprizi görmek için şifreyi girmen gerekiyor.<br>
+            <strong>İpucu:</strong> İlk WhatsApp mesajımız (Yıldönümümüz) 💬
+        </p>
+        <input type="text" id="passInput" class="password-input" placeholder="01.01.1111" maxlength="10">
+        <button class="enter-btn" onclick="checkPassword()">Giriş Yap</button>
+        <p class="error-msg" id="errorMsg">Maalesef yanlış tarih sevgilim 😔</p>
     </div>
 
     <audio id="bg-music" loop>
         <source src="muzik.mp3" type="audio/mpeg">
-        Tarayıcın sesi desteklemiyor.
     </audio>
 
     <div class="container" id="main-content">
         <header>
-            <h1>Seni Seviyorum</h1>
-            <p class="subtitle">Nice mutlu yıllarımıza Eda...</p>
+            <h1>Hoş geldin Eda</h1>
+            <div class="date-badge">04.07.2025'ten beri...</div>
         </header>
 
-        <div class="counter-box">
-            <p>Seninle geçen her saniye çok değerli...</p>
-            <div class="timer" id="timer">Hesaplanıyor...</div>
-        </div>
-
-        <div class="gallery">
-            <div class="photo-card">
-                <img src="resim1.jpg" alt="Bizim Fotoğrafımız">
-                <div class="caption">İlk Günümüz</div>
-            </div>
-            <div class="photo-card">
-                <img src="resim2.jpg" alt="Bizim Fotoğrafımız">
-                <div class="caption">En Güzel Tatil</div>
-            </div>
-            <div class="photo-card">
-                <img src="resim3.jpg" alt="Bizim Fotoğrafımız">
-                <div class="caption">Gülüşün...</div>
+        <div class="counter-card">
+            <p style="margin-bottom:15px; font-size: 0.9rem; opacity: 0.8;">Birlikte geçen her saniye...</p>
+            <div class="counter-grid">
+                <div class="counter-item"><span class="num" id="days">0</span><span class="label">Gün</span></div>
+                <div class="counter-item"><span class="num" id="hours">0</span><span class="label">Saat</span></div>
+                <div class="counter-item"><span class="num" id="minutes">0</span><span class="label">Dk</span></div>
+                <div class="counter-item"><span class="num" id="seconds">0</span><span class="label">Sn</span></div>
             </div>
         </div>
-
-        <div class="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_BURAYA?controls=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        
+        <div class="section-title"><i class="fas fa-film"></i> Bizim Filmimiz</div>
+        
+        <div class="video-wrapper">
+            <video autoplay loop muted playsinline>
+                <source src="eda1.mp4" type="video/mp4">
+            </video>
         </div>
 
-        <div class="letter">
-            <h2>Sevgili Eda,</h2>
+        <div class="video-wrapper">
+            <video autoplay loop muted playsinline>
+                <source src="eda2.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="section-title"><i class="fas fa-camera"></i> Anılarımız</div>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox('resim1.jpg')"><img src="resim1.jpg"></div>
+            <div class="gallery-item" onclick="openLightbox('resim2.jpg')"><img src="resim2.jpg"></div>
+            <div class="gallery-item" onclick="openLightbox('resim3.jpg')"><img src="resim3.jpg"></div>
+            <div class="gallery-item" onclick="openLightbox('resim4.jpg')"><img src="resim4.jpg"></div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-envelope"></i> Sana Notum</div>
+        <div class="letter-box">
             <p>
-                Bugün senin günün. Hayatıma girdiğin o günden beri her şey çok daha güzel. 
-                Seninle paylaştığımız her anı, her gülüşü dünyalara değişmem. 
-                İyi ki doğdun, iyi ki varsın ve en önemlisi iyi ki benimsin.
+                <strong>Canım Sevgilim,</strong><br><br>
+                İlk mesajımızın tarihi olan 4 Temmuz'u asla unutmayacağım. O gün başlayan bu hikaye, hayatımın en güzel serüveni oldu. 
                 <br><br>
                 Seni her şeyden çok seviyorum. ❤️
-                <br><br>
-                <strong>— (Senin Adın)</strong>
             </p>
+        </div>
+
+        <div style="text-align: center; font-size: 0.8rem; color: #555; margin-bottom: 20px;">
+            iPhone 16 Pro Max • Eda'ya Özel
         </div>
     </div>
 
-    <div class="music-control" onclick="toggleMusic()">
-        🎵
+    <div class="music-fab" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <span id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="">
     </div>
 
     <script>
-        // TARIH AYARI (YIL, AY-1, GÜN) 
-        // Örnek: 2022 yılı, Şubat ayı (1), 14. gün için: new Date(2022, 1, 14)
-        // Not: Aylar 0'dan başlar (Ocak:0, Şubat:1, ... Aralık:11)
-        const startDate = new Date(2020, 5, 20); // BURAYI KENDİ TARİHİNLE DEĞİŞTİR
+        // Şifre: 04.07.2025
+        const correctPassword = "04.07.2025"; 
+        const startDate = new Date(2025, 6, 4); 
 
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
+        function checkPassword() {
+            const input = document.getElementById('passInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const passScreen = document.getElementById('password-screen');
+            const mainContent = document.getElementById('main-content');
+            const audio = document.getElementById('bg-music');
+            const musicBtn = document.querySelector('.music-fab');
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
-
-            document.getElementById('timer').innerText = 
-                `${days} Gün ${hours} Saat ${minutes} Dakika ${seconds} Saniye`;
-        }
-        setInterval(updateTimer, 1000);
-
-        // Müzik ve Giriş Kontrolü
-        const audio = document.getElementById('bg-music');
-        const overlay = document.getElementById('intro-overlay');
-        const mainContent = document.getElementById('main-content');
-        let isPlaying = false;
-
-        function startExperience() {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                mainContent.style.opacity = '1';
-                audio.play();
-                isPlaying = true;
-                createHearts();
-            }, 1000);
-        }
-
-        function toggleMusic() {
-            if (isPlaying) {
-                audio.pause();
-                isPlaying = false;
-                document.querySelector('.music-control').style.animation = 'none';
+            if (input === correctPassword) {
+                passScreen.style.opacity = '0';
+                setTimeout(() => {
+                    passScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => mainContent.style.opacity = '1', 50);
+                    
+                    audio.play().then(() => {
+                        musicBtn.classList.add('music-playing');
+                        isPlaying = true;
+                    }).catch(e => console.log("Otomatik oynatma engellendi."));
+                    
+                    startHearts();
+                }, 800);
             } else {
-                audio.play();
-                isPlaying = true;
-                document.querySelector('.music-control').style.animation = 'spin 4s linear infinite';
+                errorMsg.style.display = 'block';
+                document.getElementById('passInput').style.border = "1px solid red";
+                setTimeout(() => {
+                    document.getElementById('passInput').style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                }, 500);
             }
         }
 
-        // Uçuşan Kalpler Efekti
-        function createHearts() {
+        let isPlaying = false;
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            const musicBtn = document.querySelector('.music-fab');
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.classList.remove('music-playing');
+                isPlaying = false;
+            } else {
+                audio.play();
+                musicBtn.classList.add('music-playing');
+                isPlaying = true;
+            }
+        }
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('days').innerText = d;
+            document.getElementById('hours').innerText = h;
+            document.getElementById('minutes').innerText = m;
+            document.getElementById('seconds').innerText = s;
+        }
+        setInterval(updateCounter, 1000);
+
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+            lb.style.display = 'flex';
+            setTimeout(() => lb.style.opacity = '1', 10);
+            lbImg.src = src;
+        }
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.style.opacity = '0';
+            setTimeout(() => lb.style.display = 'none', 300);
+        }
+
+        function startHearts() {
             setInterval(() => {
                 const heart = document.createElement('div');
-                heart.classList.add('heart');
+                heart.classList.add('floating-heart');
                 heart.innerHTML = '❤️';
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animationDuration = Math.random() * 3 + 2 + 's';
                 document.body.appendChild(heart);
-                
-                setTimeout(() => {
-                    heart.remove();
-                }, 5000);
+                setTimeout(() => heart.remove(), 5000);
             }, 300);
         }
     </script>
