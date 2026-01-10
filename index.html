@@ -1,200 +1,536 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Seni Çok Seviyorum EDA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Seni Çok Seviyorum EDA</title>
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Pinyon+Script&display=swap" rel="stylesheet">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        /* User Requested Palette: Neon/Dark */
+        --primary: #ff2e63; /* Neon Pink */
+        --secondary: #08d9d6; /* Neon Cyan */
+        --bg-color: #000000;
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-color: #ffffff;
 
-<style>
-/* === ROOT & RESET === */
-:root{
---primary:#ff2e63;
---secondary:#08d9d6;
---bg:#000;
---glass:rgba(255,255,255,.08);
---border:rgba(255,255,255,.1);
---text:#fff;
-}
+        /* Fonts */
+        --font-heading: 'Great Vibes', cursive;
+        --font-body: 'Inter', sans-serif;
 
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{
-background:var(--bg);
-color:var(--text);
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-overflow:hidden;
-}
-body.unlocked{overflow-y:auto}
+        --accent-color: var(--primary);
+        --accent-light: var(--secondary);
+        --accent-strong: var(--primary);
+    }
 
-/* === GATE === */
-.gate-overlay{
-position:fixed;inset:0;
-background:#000;
-z-index:1000;
-display:flex;
-align-items:center;
-justify-content:center;
-transition:opacity 1s ease;
-}
-.gate-overlay.hidden{opacity:0;pointer-events:none}
-.intro-content{
-background:var(--glass);
-backdrop-filter:blur(20px);
-border:1px solid var(--border);
-border-radius:30px;
-padding:3rem;
-text-align:center;
-animation:float 6s infinite;
-}
-@keyframes float{50%{transform:translateY(-10px)}}
-.heart-icon{font-size:4rem;color:var(--primary);animation:beat 1.5s infinite}
-@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-input{
-background:none;border:none;
-border-bottom:1px solid #555;
-color:#fff;
-font-size:1.4rem;
-text-align:center;
-outline:none;
-margin:1rem 0;
-}
-button{
-background:var(--primary);
-border:none;
-border-radius:30px;
-padding:12px 40px;
-color:#fff;
-cursor:pointer;
-}
+    /* Password Gate overlay */
+    .gate-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* === HERO === */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.main-title{font-size:3.5rem}
-.highlight{color:var(--primary);font-size:4.5rem}
+    .gate-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
 
-/* === CONTENT === */
-.content-container{max-width:900px;margin:auto;padding:2rem}
-.chapter{margin:6rem 0;display:flex;flex-direction:column;gap:2rem;opacity:0;transform:translateY(40px);transition:1s}
-.chapter.visible{opacity:1;transform:none}
-.text-block{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:2rem}
-.media-block{
-background:#000;
-border-radius:20px;
-overflow:hidden;
-border:1px solid var(--border);
-}
+    .intro-content {
+        text-align: center;
+        color: #fff;
+        padding: 3rem;
+        max-width: 90%;
+        width: 400px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        box-shadow: 0 0 30px rgba(255, 46, 99, 0.2);
+        animation: floatCard 6s ease-in-out infinite;
+    }
 
-/* === VIDEO (iOS SAFE) === */
-video{
-width:100%;
-display:block;
-border-radius:20px;
-background:#000;
-}
+    .heart-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        filter: drop-shadow(0 0 15px rgba(255, 46, 99, 0.6));
+        animation: heartBeat 1.5s infinite;
+    }
 
-/* === FOOTER === */
-footer{text-align:center;opacity:.6;margin:4rem 0}
-</style>
+    .intro-content h2 {
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .poetic-text {
+        font-size: 1.1rem;
+        opacity: 0.8;
+        margin-bottom: 2rem;
+        font-style: italic;
+        color: var(--accent-light);
+    }
+
+    .input-wrapper {
+        position: relative;
+        margin: 2rem auto;
+        width: 200px;
+    }
+
+    .gate-overlay input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.5rem;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        background: transparent;
+        color: var(--accent-color);
+        text-align: center;
+        font-family: var(--font-body);
+        transition: all 0.3s;
+        outline: none;
+        letter-spacing: 2px;
+    }
+
+    .gate-overlay input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .gate-overlay input:focus {
+        border-bottom-color: var(--accent-color);
+    }
+
+    .gate-overlay button {
+        padding: 12px 40px;
+        background: var(--primary);
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        color: white;
+        font-weight: bold;
+        border-radius: 50px;
+        margin-top: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 1px;
+        box-shadow: 0 0 15px rgba(255, 46, 99, 0.4);
+    }
+
+    .gate-overlay button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 25px rgba(255, 46, 99, 0.6);
+    }
+
+    @keyframes heartBeat {
+        0% { transform: scale(1); }
+        14% { transform: scale(1.1); }
+        28% { transform: scale(1); }
+        42% { transform: scale(1.1); }
+        70% { transform: scale(1); }
+    }
+
+    @keyframes floatCard {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .error-msg { color: #ff6b6b; margin-top: 15px; min-height: 20px; font-size: 0.9rem; text-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }
+    .shake { animation: shake 0.5s; }
+    @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } 100% { transform: translateX(0); } }
+
+    /* Special Date Note Style */
+    .special-date-note { margin-top: 1.5rem; font-style: italic; color: var(--secondary); font-weight: bold; text-align: center; border-top: 1px solid var(--glass-border); padding-top: 1rem; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body { background: var(--bg-color); background-attachment: fixed; color: var(--text-color); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; overflow-y: hidden; -webkit-font-smoothing: antialiased; }
+
+    body.unlocked { overflow-y: auto; }
+
+    h1, h2, h3 { font-family: var(--font-heading); font-weight: 400; }
+    h2 { font-size: 3rem; color: var(--primary); }
+    h3 { font-size: 2rem; color: var(--secondary); }
+
+    /* Utilities */
+    .full-screen { min-height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
+
+    /* Hero Section */
+    .hero { background: radial-gradient(circle at center, #1a050a 0%, #000000 100%); text-align: center; padding: 2rem; flex-direction: column; }
+    .hero-content { z-index: 2; }
+    .main-title { font-family: var(--font-heading); font-size: 4rem; line-height: 1.2; margin-bottom: 1rem; letter-spacing: 2px; }
+    .main-title .highlight { font-family: var(--font-heading); color: var(--primary); font-size: 6rem; display: block; margin-top: 0.5rem; text-shadow: 0 0 30px rgba(255, 46, 99, 0.4); }
+    .subtitle { font-size: 1.2rem; opacity: 0.8; margin-top: 1rem; font-family: var(--font-body); color: var(--secondary); }
+
+    .scroll-indicator { margin-top: 4rem; opacity: 0.7; animation: bounce 2s infinite; }
+    .scroll-indicator .text { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+    .scroll-indicator .arrow { font-size: 1.5rem; color: var(--primary); }
+    @keyframes bounce { 0%,20%,50%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+
+    /* Content Container */
+    .content-container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* Chapter Header */
+    .chapter-header { text-align: center; margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
+    .chapter-header h2 { font-size: 2.5rem; letter-spacing: 3px; color: var(--primary); text-shadow: 0 0 10px rgba(255, 46, 99, 0.3); }
+
+    /* Chapter Sections */
+    .chapter { display: flex; flex-direction: column; gap: 2rem; margin-bottom: 6rem; opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
+    .chapter.visible { opacity: 1; transform: translateY(0); }
+    .text-block { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+    .text-block h3 { font-size: 2rem; margin-bottom: 1.5rem; color: var(--secondary); border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
+    .traits { list-style: none; }
+    .traits li { margin-bottom: 0.8rem; padding-left: 1.2rem; position: relative; font-size: 1.1rem; }
+    .traits li::before { content: '•'; color: var(--primary); position: absolute; left: 0; }
+
+    .media-block { width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(255, 46, 99, 0.15); background: #000; position: relative; min-height: 300px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); }
+
+    .drive-video-frame { width: 100%; height: 100%; min-height: 300px; border: 0; }
+
+    .memory-video { width: 100%; height: auto; display: block; object-fit: cover; }
+
+    .placeholder-media { width: 100%; height: 300px; background: linear-gradient(45deg, #101010, #202020); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.2); font-family: var(--font-heading); font-size: 1.5rem; }
+
+    /* New: image inside media */
+    .memory-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Emotional card */
+    .emotional-card { background: linear-gradient(135deg, rgba(255,46,99,0.06), rgba(8,217,214,0.03)); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.6); color: rgba(255,255,255,0.95); font-size: 1.1rem; line-height: 1.8; }
+
+    .emotional-card h3 { margin-bottom: 1rem; color: var(--primary); }
+
+    /* Finale */
+    .finale { background: linear-gradient(to top, #100508 0%, #000000 100%); text-align: center; padding: 2rem; }
+    .note-card { background: var(--glass-bg); padding: 3rem 2rem; border-radius: 20px; border: 1px solid var(--glass-border); max-width: 400px; width: 100%; position: relative; box-shadow: 0 0 20px rgba(255, 46, 99, 0.1); }
+    .note-card h3 { color: var(--primary); margin-bottom: 2rem; font-size: 2.2rem; }
+    .note-content p { margin-bottom: 1rem; font-size: 1.2rem; }
+    .signature { margin-top: 2rem; font-family: var(--font-heading); font-style: italic; color: var(--secondary); font-size: 1.5rem; }
+
+    /* Animations */
+    .fade-in-up { animation: fadeInUp 1.5s ease-out forwards; }
+    .fade-in { animation: fadeIn 2s ease-out forwards; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Responsive Overrides */
+    @media (min-width: 768px) {
+        .chapter { flex-direction: row; align-items: center; }
+        .chapter.reverse { flex-direction: row-reverse; }
+        .text-block, .media-block { flex: 1; }
+        .main-title { font-size: 4.5rem; }
+    }
+
+    @media (max-width: 450px) {
+        .main-title { font-size: 3rem; }
+        .main-title .highlight { font-size: 4rem; }
+        .chapter { gap: 1.5rem; margin-bottom: 4rem; }
+        .text-block { padding: 1.5rem; }
+        .media-block { min-height: 400px; }
+    }
+
+    /* Music Control FAB */
+    .music-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(255, 46, 99, 0.6); cursor: pointer; z-index: 999; font-size: 1.5rem; transition: transform 0.3s; }
+    .music-fab:hover { transform: scale(1.1) rotate(15deg); }
+    .music-playing { animation: spinFAB 4s linear infinite; box-shadow: 0 0 30px rgba(255, 46, 99, 0.9); }
+    @keyframes spinFAB { 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-
 <body>
 
-<!-- PASSWORD -->
 <div id="password-gate" class="gate-overlay">
-<div class="intro-content">
-<div class="heart-icon">❤️</div>
-<h2>Hoşgeldin Sevgilim</h2>
-<p>Hikayemiz ne zaman başladı?</p>
-<input id="date-input" placeholder="GG.AA.YYYY">
-<button id="unlock-btn">Kilidi Aç</button>
-<p id="error-msg"></p>
-</div>
+    <div class="intro-content">
+        <div class="heart-icon">❤️</div>
+        <h2>Hoşgeldin Sevgilim</h2>
+        <p class="poetic-text">Seninle hikayemiz ne zaman başladı?</p>
+
+        <div class="input-wrapper">
+            <input type="text" id="date-input" placeholder="GG.AA.YYYY" autocomplete="off">
+            <span class="focus-border"></span>
+        </div>
+
+        <button id="unlock-btn">Kilidi Aç</button>
+        <p id="error-msg" class="error-msg"></p>
+    </div>
 </div>
 
-<audio id="bg-music" loop>
-<source src="nunslt.mp3" type="audio/mp3">
+<audio id="bg-music" loop preload="auto">
+    <source src="nunslt.mp3" type="audio/mp3">
 </audio>
 
-<section class="hero">
-<div>
-<h1 class="main-title">Seni Çok Seviyorum<br><span class="highlight">EDAM</span></h1>
-<p>4 Temmuz 2025</p>
+<div id="music-fab" class="music-fab" style="display: none;">
+    <span id="music-icon">🎵</span>
 </div>
+
+<section class="hero full-screen">
+    <div class="hero-content fade-in-up">
+        <h1 class="main-title">Seni Çok Seviyorum<br><span class="highlight">EDAM</span></h1>
+        <p class="subtitle">4 Temmuz 2025</p>
+
+        <div class="scroll-indicator">
+            <span class="text">Hediyeni Gör</span>
+            <div class="arrow">↓</div>
+        </div>
+    </div>
+    <div class="hero-overlay"></div>
 </section>
 
 <main class="content-container">
 
-<!-- CHAPTER 1 -->
-<section class="chapter">
-<div class="text-block">
-<h3>💢 Eda Sinirlendiğinde</h3>
-<ul>
-<li>Bağırır, çağırır.</li>
-<li>Net olur.</li>
-<li>Kırgınlığı saklamaz.</li>
-</ul>
-</div>
-<div class="media-block">
-<video controls playsinline webkit-playsinline preload="metadata">
-<source src="video2.mp4" type="video/mp4">
-</video>
-</div>
-</section>
+    <header class="chapter-header fade-in">
+        <h2>📘 E D A K İ T A B I</h2>
+    </header>
 
-<!-- CHAPTER 2 -->
-<section class="chapter">
-<div class="text-block">
-<h3>💚 Eda Güldüğünde</h3>
-<p>Her şey hafifler.</p>
-</div>
-<div class="media-block">
-<img src="eda2.png" style="width:100%">
-</div>
-</section>
+    <section class="chapter fade-in-on-scroll" id="chapter-1">
+        <div class="text-block">
+            <h3>💢 Eda Sinirlendiğinde</h3>
+            <ul class="traits">
+                <li>Bağırır, çağırır.</li>
+                <li>İçinde tutmaz, ne hissediyorsa söyler.</li>
+                <li>Uzakta durmaz, tam tersine üstüne gelir.</li>
+                <li>Ama sinirinin altında hep kırgınlık vardır.</li>
+            </ul>
+        </div>
+        <div class="media-block">
+            <!-- GÖMÜLEN: Sağlanan Google Drive video (görüntülenebilir preview linkine çevrildi) -->
+            <iframe src="https://drive.google.com/file/d/1QXNyOLnAEBwHdYMdrZ-qOtJ96iioe4Wm/preview"
+                    class="drive-video-frame"
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                    allowfullscreen
+                    frameborder="0"
+                    title="Eda'nın Anı Videosu">
+            </iframe>
+        </div>
+    </section>
 
-<!-- CHAPTER 3 -->
-<section class="chapter">
-<div class="text-block">
-<h3>💭 Eda Kıskandığında</h3>
-<p>Gizlemez. Çünkü önemsiyor.</p>
-</div>
-<div class="media-block">
-<video controls playsinline webkit-playsinline preload="metadata">
-<source src="eda3.mp4" type="video/mp4">
-</video>
-</div>
-</section>
+    <section class="chapter reverse fade-in-on-scroll" id="chapter-2">
+        <div class="text-block">
+            <h3>💚 Eda Güldüğünde</h3>
+            <ul class="traits">
+                <li>Güldüğünde ortam değişir.</li>
+                <li>Bir anda her şey daha hafif gelir.</li>
+                <li>Bazen durduk yere güler ya…</li>
+                <li>İşte o anlar insanın aklında kalır.</li>
+            </ul>
+        </div>
+        <div class="media-block">
+            <!-- GÖRSEL: repo içindeki eda2.png kullanıldı -->
+            <img src="eda2.png" alt="Gülüşün" class="memory-image">
+        </div>
+    </section>
+
+    <section class="chapter fade-in-on-scroll" id="chapter-3">
+        <div class="text-block">
+            <h3>💭 Eda Kıskandığında</h3>
+            <ul class="traits">
+                <li>Belli eder.</li>
+                <li>Gizlemez, saklamaz.</li>
+                <li>Net olur, lafını dolandırmaz.</li>
+                <li>Çünkü önemsediği şeylerde geri durmaz.</li>
+            </ul>
+        </div>
+        <div class="media-block">
+            <iframe src="https://drive.google.com/file/d/1k50dkcCjQ3j0JFKna62JwUrX882FA4MW/preview"
+                     class="drive-video-frame"
+                     allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                     allowfullscreen
+                     frameborder="0"
+                    title="Eda'nın Videosu">
+            </iframe>
+        </div>
+    </section>
+
+    <section class="chapter reverse fade-in-on-scroll" id="chapter-4">
+        <div class="text-block">
+            <h3>❤️ Eda Aşık Olduğunda</h3>
+            <ul class="traits">
+                <li>Hafife almaz.</li>
+                <li>Detayları unutmayanlardandır.</li>
+                <li>Kolay bağlanmaz…</li>
+                <li>Ama bağlandı mı yarım kalmaz.</li>
+            </ul>
+            <p class="special-date-note">seninle ilk bakışma tarihimiz: 04.07.2025</p>
+        </div>
+        <div class="media-block">
+            <div class="placeholder-media">
+                <span>Bize Dair...</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- YENİ BÖLÜM: Eda'yı derinden etkileyecek uzun metin -->
+    <section class="chapter fade-in-on-scroll" id="chapter-5">
+        <div class="text-block">
+            <h3>📝 Sana Yazdığım En Uzun Şiir / Mektup</h3>
+            <div class="emotional-card">
+                <p>Sevgilim,</p>
+                <p>Bu satırları okurken belki gözlerin dolacak, belki gülümseyeceksin; ama bilmeni istiyorum ki hepsi 
+                kalbimin en gerçek melodisinden dökülen kelimeler. Seni ilk gördüğüm anı, o anki nefesi, o 
+                istemsiz bakışı, hala hatırlıyorum. Zaman... zaman bizi sınadı; dalgalar geldi geçti, suskunluklar, 
+                kıskançlık anları, büyük kahkahalar, küçük anlaşmazlıklar. Ama her şeyin ötesinde bir gerçek var: 
+                seninle olmak, dünyayı daha az yalnız hissettiriyor bana.</p>
+
+                <p>Gülümsediğinde içimde bir şeyler hafifliyor; sinirlendiğinde ise seni anlamak için daha çok çabalıyorum. 
+                Belki bazen doğru kelimeleri seçemiyorum, belki birkaç adım geride durup beklemek yerine sarılıyorum.
+                Kusurlarım var, evet; ama her kusurumun ortasında seni daha iyi tanımaya, seni daha güvenle sevmeye 
+                kararlı bir adam yatıyor. Seni üzmek istemedim hiç; eğer istemeden de olsa üzdüysem, bu mektup bir 
+                özür ve aynı zamanda bir söz olsun: seni kırmamaya, seni anlamaya, yanında durmaya dair.</p>
+
+                <p>Unutma ki en açık halin en güzel halin. Ağladığın gecelerde bile yüzün bende bir şiir gibi kalıyor — 
+                izleri içimde saklıyorum. Eğer bir gün yalnız hissedersen, ya da bir an için doğru sözü bulamazsan, 
+                dön geriye bu sayfalara; bil ki seni her hâlinle seviyorum. Seninle paylaştığım anılar, küçük 
+                notlar, gülüşler ve tartışmalar bile benim için kutsal. Senin kalbinin güvenle attığını bilmek, benim 
+                dünyamı aydınlatıyor.</p>
+
+                <p>Senin yanında olmak demek; sabah uyanışımda ilk düşündüğüm, geceleri uykuya dalmadan önce son 
+                aklımdan geçen olmak demek. Birlikte kuramadığımız hayallerin hesabını sana vereceğim; eksikleri 
+                tamamlayacağım, yanlışları düzelteceğim. Kendi sesiyle ağlayıp aynı zamanda beni de güldürecek o 
+                güzel halini asla kaybetme; çünkü o halin, bende hayatın en temiz gerçeği.</p>
+
+                <p>Son olarak şunu söyleyeyim: seni sevmek kolay değil belki ama en doğru şey. Eline tutunup seni 
+                korumak, gözlerinin içine bakıp seni anlamak, hayatın küçük şeylerinde bile elini tutmak istiyorum.
+                Eğer bu satırlar sessiz bir çığlık gibi kalbinde bir yere dokunursa, bil ki ben hep buradayım — 
+                elini uzat, ben de aynı şekilde uzanacağım. Seni seviyorum. Hep... her hâlinle.</p>
+
+                <p class="signature">Seni Seven Sevgilin</p>
+            </div>
+        </div>
+        <div class="media-block">
+            <div class="placeholder-media">
+                <span>Okudukça beni düşün...</span>
+            </div>
+        </div>
+    </section>
 
 </main>
 
-<footer>❤️</footer>
+<section class="finale full-screen fade-in-on-scroll">
+    <div class="note-card">
+        <h3>🎂 Doğum Günü Notu</h3>
+        <div class="note-content">
+            <p>Bugün senin günün.</p>
+            <p>Hayat sana biraz daha güzel davransın.</p>
+            <p>Yüzün daha çok gülsün.</p>
+            <p>Ben de o gülüşlerin sebebi olayım.</p>
+        </div>
+        <p class="signature">Seni Seven Sevgilin</p>
+    </div>
+</section>
 
 <script>
-const gate=document.getElementById("password-gate");
-const btn=document.getElementById("unlock-btn");
-const input=document.getElementById("date-input");
-const music=document.getElementById("bg-music");
-btn.onclick=()=>{
-if(["04.07.2025","4.7.2025"].includes(input.value.trim())){
-gate.classList.add("hidden");
-document.body.classList.add("unlocked");
-music.play();
-setTimeout(()=>gate.remove(),1000);
-}else{
-document.getElementById("error-msg").innerText="Yanlış tarih";
-}
-};
+document.addEventListener('DOMContentLoaded', () => {
+    // 0. Password Gate & Music Logic
+    const gateOverlay = document.getElementById('password-gate');
+    const dateInput = document.getElementById('date-input');
+    const unlockBtn = document.getElementById('unlock-btn');
+    const errorMsg = document.getElementById('error-msg');
 
-const obs=new IntersectionObserver(e=>{
-e.forEach(i=>i.isIntersecting&&i.target.classList.add("visible"))
-},{threshold:.2});
-document.querySelectorAll(".chapter").forEach(c=>obs.observe(c));
+    // Müzik Elemanları
+    const bgMusic = document.getElementById('bg-music');
+    const musicFab = document.getElementById('music-fab');
+    const musicIcon = document.getElementById('music-icon');
+
+    // Şifre: 04.07.2025 (Kabul edilen, temizlenmiş varyasyonlar)
+    const acceptedVariations = [
+        "04.07.2025",
+        "4.7.2025",
+        "04/07/2025",
+        "4/7/2025",
+        "04-07-2025"
+    ];
+
+    function checkDate() {
+        const inputVal = dateInput.value.trim();
+
+        if (acceptedVariations.includes(inputVal)) {
+            // Şifre Doğru -> Kilidi Aç ve Müziği Başlat
+            gateOverlay.classList.add('hidden');
+            document.body.classList.add('unlocked');
+
+            // Müzik Başlat (Kullanıcı etkileşimi olduğu için tarayıcı izin verecektir)
+            if (bgMusic) {
+                bgMusic.volume = 0.5; // Ses seviyesi
+                bgMusic.play().then(() => {
+                    musicFab.style.display = 'flex';
+                    musicFab.classList.add('music-playing');
+                }).catch(e => console.log("Müzik oynatma hatası:", e));
+            }
+
+            // Overlay animasyonu bitince kaldır
+            setTimeout(() => {
+                gateOverlay.style.display = 'none';
+            }, 1000);
+        } else {
+            // Şifre Yanlış
+            errorMsg.textContent = "Maalesef yanlış tarih...";
+            dateInput.classList.add('shake');
+            setTimeout(() => {
+                dateInput.classList.remove('shake');
+            }, 500);
+        }
+    }
+
+    if (unlockBtn) unlockBtn.addEventListener('click', checkDate);
+
+    // Enter tuşu desteği
+    if (dateInput) {
+        dateInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkDate();
+        });
+    }
+
+    // Müzik Kontrol Butonu
+    if (musicFab) {
+        musicFab.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicFab.classList.add('music-playing');
+                musicIcon.textContent = '🎵';
+            } else {
+                bgMusic.pause();
+                musicFab.classList.remove('music-playing');
+                musicIcon.textContent = '🔇';
+            }
+        });
+    }
+
+    // 1. Scroll Animations (Intersection Observer)
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.2 // %20'si görünür olduğunda tetikle
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    const chapters = document.querySelectorAll('.chapter, .finale');
+    chapters.forEach(section => { observer.observe(section); });
+
+    // NOT: Harici (Google Drive) video kullandığımız için yerel video oynatma mantığı (Video Autoplay Logic) kaldırılmıştır.
+});
 </script>
 
 </body>
